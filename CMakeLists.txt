@@ -1,14 +1,27 @@
+
 cmake_minimum_required(VERSION 3.5)
 project(clessc)
 
+# Compiler flags
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pedantic -Wextra")
 
+# Disable shared libraries and enforce static linking
+set(BUILD_SHARED_LIBS OFF)
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static")
+
+# Add cmake modules path
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 
+# Add the libless subdirectory and make sure it builds as a static library
 add_subdirectory(libless)
 
+# Add the executable target for clessc
 add_executable(clessc src/lessc.cpp)
+
+# Include directories
 target_include_directories(clessc PRIVATE src .)
+
+# Link the less static library to the clessc target
 target_link_libraries(clessc less)
 
 target_compile_definitions(clessc PRIVATE PACKAGE_STRING="LESS CSS Compiler")
